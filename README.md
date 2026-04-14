@@ -1,5 +1,7 @@
 # ThreatMail AI — CTI Escalation Investigation Assistant
 
+🚀 Paste an escalation email → get full RCA, threat analysis, and detection gaps in seconds.
+
 An AI-powered tool that analyzes escalation emails and generates structured threat intelligence, Root Cause Analysis (RCA), and detection gap insights.
 
 ---
