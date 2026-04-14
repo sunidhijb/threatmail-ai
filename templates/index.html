@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ThreatMail AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07090f;--s1:#0c0f1a;--s2:#111827;--border:#1e2d44;--border2:#243044;--cyan:#22d3ee;--cyan2:#06b6d4;--red:#f43f5e;--green:#10b981;--gold:#f59e0b;--text:#cbd5e1;--text2:#64748b;--white:#f1f5f9;--mono:'IBM Plex Mono',monospace;--sans:'Inter',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;min-height:100vh;background-image:radial-gradient(ellipse 60% 40% at 15% 0%,rgba(34,211,238,0.06) 0%,transparent 60%),radial-gradient(ellipse 40% 30% at 85% 100%,rgba(244,63,94,0.04) 0%,transparent 60%);}
+a{text-decoration:none;color:inherit;}
+nav{height:58px;border-bottom:1px solid var(--border);background:rgba(7,9,15,0.96);backdrop-filter:blur(20px);position:sticky;top:0;z-index:200;display:flex;align-items:center;padding:0 32px;}
+.nav-brand{display:flex;align-items:center;gap:10px;margin-right:36px;}
+.nav-icon{width:30px;height:30px;background:linear-gradient(135deg,var(--cyan),var(--red));border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:600;color:#000;}
+.nav-title{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--white);letter-spacing:1.5px;}
+.nav-links{display:flex;gap:2px;}
+.nl{padding:7px 14px;border-radius:7px;font-size:12px;font-weight:500;color:var(--text2);transition:all 0.15s;}
+.nl:hover{color:var(--white);background:rgba(255,255,255,0.06);}
+.nl.active{color:var(--cyan);background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.15);}
+.nav-r{margin-left:auto;font-size:11px;color:var(--text2);font-family:var(--mono);display:flex;align-items:center;gap:6px;}
+.ndot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.wrap{max-width:1060px;margin:0 auto;padding:36px 20px 80px;}
+.hero{margin-bottom:32px;}
+.eyebrow{font-family:var(--mono);font-size:11px;color:var(--cyan);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.eyebrow::before{content:'';width:20px;height:1px;background:var(--cyan);}
+.hero h1{font-size:28px;font-weight:700;color:var(--white);line-height:1.2;margin-bottom:10px;letter-spacing:-0.5px;}
+.hero h1 em{font-style:normal;color:var(--cyan);}
+.hero p{font-size:14px;color:var(--text2);line-height:1.7;max-width:580px;}
+.card{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:20px;}
+.card-label{font-family:var(--mono);font-size:10px;color:var(--cyan);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.cdot{width:5px;height:5px;border-radius:50%;background:var(--cyan);box-shadow:0 0 5px var(--cyan);}
+.keys-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.kg label{display:block;font-size:11px;font-weight:500;color:var(--text2);margin-bottom:7px;}
+.kg label .req{color:var(--red);margin-left:4px;}
+.kg label .opt{color:var(--green);margin-left:4px;}
+.ki{width:100%;background:var(--s1);border:1px solid var(--border2);border-radius:8px;color:var(--white);font-family:var(--mono);font-size:12px;padding:10px 14px;outline:none;transition:border-color 0.2s;}
+.ki:focus{border-color:var(--cyan);}
+.ki::placeholder{color:var(--text2);opacity:0.6;}
+.kn{font-size:11px;color:var(--text2);margin-top:6px;}
+.kn a{color:var(--cyan);}
+textarea{width:100%;min-height:180px;background:var(--s1);border:1px solid var(--border2);border-radius:10px;color:var(--text);font-family:var(--sans);font-size:14px;padding:16px;resize:vertical;outline:none;transition:border-color 0.2s;line-height:1.7;}
+textarea:focus{border-color:var(--cyan);}
+textarea::placeholder{color:var(--text2);opacity:0.7;}
+.brow{display:flex;gap:10px;margin-top:16px;align-items:center;flex-wrap:wrap;}
+.bp{background:linear-gradient(135deg,var(--cyan),var(--cyan2));color:#000;font-family:var(--mono);font-size:12px;font-weight:600;padding:11px 26px;border:none;border-radius:8px;cursor:pointer;letter-spacing:1px;transition:opacity 0.2s,transform 0.1s;display:flex;align-items:center;gap:8px;}
+.bp:hover{opacity:0.88;transform:translateY(-1px);}
+.bp:disabled{opacity:0.35;cursor:not-allowed;transform:none;}
+.bs{background:rgba(245,158,11,0.1);color:var(--gold);border:1px solid rgba(245,158,11,0.25);font-family:var(--mono);font-size:11px;padding:11px 16px;border-radius:8px;cursor:pointer;transition:opacity 0.2s;}
+.bs:hover{opacity:0.8;}
+.bg{background:transparent;color:var(--text2);border:1px solid var(--border);font-family:var(--mono);font-size:11px;padding:11px 16px;border-radius:8px;cursor:pointer;}
+.bg:hover{color:var(--white);}
+.loader{display:none;align-items:center;gap:10px;font-family:var(--mono);font-size:11px;color:var(--cyan);}
+.loader.on{display:flex;}
+.spin{width:15px;height:15px;border:2px solid var(--border2);border-top-color:var(--cyan);border-radius:50%;animation:spin 0.75s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.err{background:rgba(244,63,94,0.08);border:1px solid rgba(244,63,94,0.25);border-radius:8px;padding:14px;color:var(--red);font-family:var(--mono);font-size:12px;margin-top:14px;display:none;line-height:1.6;}
+#results{display:none;}
+#results.show{display:block;animation:up 0.4s ease;}
+@keyframes up{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;}
+.sc{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:16px;}
+.sl{font-family:var(--mono);font-size:9px;color:var(--text2);letter-spacing:2px;text-transform:uppercase;margin-bottom:7px;}
+.sv{font-size:13px;font-weight:600;color:var(--white);}
+.dlbar{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:14px 20px;display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap;}
+.dll{font-family:var(--mono);font-size:10px;color:var(--text2);letter-spacing:2px;flex:1;}
+.bd{padding:9px 20px;border-radius:7px;font-family:var(--mono);font-size:11px;font-weight:600;cursor:pointer;border:none;transition:opacity 0.2s;}
+.bd:hover{opacity:0.8;}
+.bdw{background:rgba(34,211,238,0.1);color:var(--cyan);border:1px solid rgba(34,211,238,0.25);}
+.bdp{background:rgba(244,63,94,0.1);color:var(--red);border:1px solid rgba(244,63,94,0.25);}
+.sec{background:var(--s2);border:1px solid var(--border);border-radius:12px;margin-bottom:12px;overflow:hidden;}
+.sec.hl{border-color:rgba(34,211,238,0.3);}
+.sh{padding:15px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none;transition:background 0.15s;}
+.sh:hover{background:rgba(255,255,255,0.02);}
+.sn{font-family:var(--mono);font-size:9px;color:var(--cyan);letter-spacing:1px;background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.2);padding:2px 8px;border-radius:4px;flex-shrink:0;}
+.st{font-size:13px;font-weight:600;color:var(--white);flex:1;}
+.sch{color:var(--text2);font-size:11px;transition:transform 0.2s;flex-shrink:0;}
+.sh.open .sch{transform:rotate(180deg);}
+.sb{padding:20px;display:none;}
+.sb.open{display:block;}
+.kv{border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.kvr{display:grid;grid-template-columns:200px 1fr;}
+.kvr:not(:last-child){border-bottom:1px solid var(--border);}
+.kvl{padding:10px 14px;background:rgba(34,211,238,0.025);border-right:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--text2);display:flex;align-items:center;}
+.kvv{padding:10px 14px;font-size:13px;color:var(--text);line-height:1.6;}
+.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
+.bc{background:rgba(244,63,94,0.15);color:var(--red);border:1px solid rgba(244,63,94,0.3);}
+.bh{background:rgba(251,146,60,0.12);color:#fb923c;border:1px solid rgba(251,146,60,0.3);}
+.bm{background:rgba(234,179,8,0.1);color:#eab308;border:1px solid rgba(234,179,8,0.3);}
+.bl{background:rgba(16,185,129,0.1);color:var(--green);border:1px solid rgba(16,185,129,0.3);}
+.ac{background:var(--s1);border:1px solid var(--border2);border-radius:8px;padding:16px;margin-bottom:12px;}
+.an{font-family:var(--mono);font-size:12px;color:var(--cyan);word-break:break-all;margin-bottom:10px;}
+.ad{font-size:13px;color:var(--text);margin:5px 0;line-height:1.6;}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px;}
+.tag{background:rgba(34,211,238,0.07);border:1px solid rgba(34,211,238,0.18);color:var(--cyan);font-size:10px;padding:2px 8px;border-radius:3px;font-family:var(--mono);}
+.vtc{background:rgba(34,211,238,0.03);border:1px solid rgba(34,211,238,0.15);border-radius:8px;padding:14px;margin-top:12px;}
+.vtt{font-family:var(--mono);font-size:9px;color:var(--cyan);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+.vtp{background:var(--cyan);color:#000;font-family:var(--mono);font-size:9px;font-weight:700;padding:1px 5px;border-radius:3px;}
+.vts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px;}
+.vtb{background:var(--s2);border:1px solid var(--border);border-radius:6px;padding:8px;text-align:center;}
+.vtn{font-family:var(--mono);font-size:18px;font-weight:600;}
+.vtlb{font-family:var(--mono);font-size:9px;color:var(--text2);letter-spacing:1px;margin-top:2px;}
+.rb{background:var(--s1);border-left:3px solid var(--cyan);border-radius:0 8px 8px 0;padding:14px 18px;margin-bottom:14px;}
+.rb.red{border-left-color:var(--red);}
+.rb.grn{border-left-color:var(--green);}
+.rb.gld{border-left-color:var(--gold);}
+.rt{font-family:var(--mono);font-size:9px;color:var(--cyan);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.rb.red .rt{color:var(--red);}
+.rb.grn .rt{color:var(--green);}
+.rb.gld .rt{color:var(--gold);}
+.rb p{font-size:13px;line-height:1.75;color:var(--text);}
+.sol{background:var(--s1);border:1px solid var(--border2);border-radius:8px;padding:16px;margin-bottom:12px;}
+.solh{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.sid{font-family:var(--mono);font-size:10px;background:rgba(16,185,129,0.08);color:var(--green);border:1px solid rgba(16,185,129,0.25);padding:2px 8px;border-radius:3px;}
+.blist{list-style:none;padding:0;}
+.blist li{padding:6px 0 6px 18px;position:relative;font-size:13px;color:var(--text);line-height:1.6;border-bottom:1px solid rgba(30,45,68,0.6);}
+.blist li:last-child{border-bottom:none;}
+.blist li::before{content:'▸';position:absolute;left:0;color:var(--cyan);font-size:10px;top:9px;}
+.blist.g li::before{color:var(--green);}
+@media(max-width:700px){.strip{grid-template-columns:1fr 1fr;}.keys-grid{grid-template-columns:1fr;}.kvr{grid-template-columns:1fr;}.kvl{border-right:none;border-bottom:1px solid var(--border);}nav{padding:0 16px;}.wrap{padding:24px 12px 60px;}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="nav-brand">
+    <div class="nav-icon">TM</div>
+    <span class="nav-title">THREATMAIL</span>
+  </div>
+  <div class="nav-links">
+    <a href="/" class="nl active">Analyze</a>
+    <a href="/tracker" class="nl">Tracker</a>
+    <a href="/takedowns" class="nl">Takedowns</a>
+    <a href="/gap-library" class="nl">Gap Library</a>
+    <a href="/dashboard" class="nl">Dashboard</a>
+  </div>
+  <div class="nav-r"><span class="ndot"></span>Built by Sunidhi Vishwakarma</div>
+</nav>
+
+<div class="wrap">
+  <div class="hero">
+    <div class="eyebrow">Cyber Threat Intelligence</div>
+    <h1>Escalation Investigation<br><em>Powered by AI + VirusTotal</em></h1>
+    <p>Paste any escalation email. Get a complete RCA, threat investigation, and asset analysis in seconds. Works for any CTI team, any industry.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-label"><span class="cdot"></span>API Configuration</div>
+    <div class="keys-grid">
+      <div class="kg">
+        <label>Anthropic API Key <span class="req">* required</span></label>
+        <input type="password" class="ki" id="ak" placeholder="sk-ant-api03-..."/>
+        <div class="kn">Get key at <a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> · ~$0.02 per analysis</div>
+      </div>
+      <div class="kg">
+        <label>VirusTotal API Key <span class="opt">optional — real threat data</span></label>
+        <input type="password" class="ki" id="vk" placeholder="Your VirusTotal API key..."/>
+        <div class="kn">Free at <a href="https://virustotal.com" target="_blank">virustotal.com</a> · 500 lookups/day · Skip for AI-only mode</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-label"><span class="cdot"></span>Escalation Email Input</div>
+    <textarea id="ei" placeholder="Paste any CTI escalation email here — domain impersonation, dark web alerts, social media brand abuse, phishing reports, missed detections, any type.&#10;&#10;Each analysis is completely fresh."></textarea>
+    <div class="brow">
+      <button class="bp" id="abtn" onclick="run()"><span>▶</span> Analyze Escalation</button>
+      <button class="bs" onclick="loadSample()">⬇ Load Sample Email</button>
+      <button class="bg" onclick="clearAll()">Clear</button>
+      <div class="loader" id="loader"><div class="spin"></div><span id="lmsg">Initializing…</span></div>
+    </div>
+    <div class="err" id="errBox"></div>
+  </div>
+
+  <div id="results">
+    <div class="strip">
+      <div class="sc"><div class="sl">Severity</div><div class="sv" id="ss">—</div></div>
+      <div class="sc"><div class="sl">Type</div><div class="sv" id="st">—</div></div>
+      <div class="sc"><div class="sl">Platform</div><div class="sv" id="sp">—</div></div>
+      <div class="sc"><div class="sl">Client</div><div class="sv" id="sb">—</div></div>
+    </div>
+    <div class="dlbar">
+      <span class="dll">Export Full Report</span>
+      <button class="bd bdw" onclick="dl('word')">⬇ Word (.docx)</button>
+      <button class="bd bdp" onclick="dl('pdf')">⬇ PDF</button>
+    </div>
+    <div class="sec"><div class="sh open" onclick="tog(this)"><span class="sn">01</span><span class="st">Escalation Summary</span><span class="sch">▾</span></div><div class="sb open" id="s01"></div></div>
+    <div class="sec"><div class="sh open" onclick="tog(this)"><span class="sn">02</span><span class="st">Assets Identified &amp; Classified</span><span class="sch">▾</span></div><div class="sb open" id="s02"></div></div>
+    <div class="sec"><div class="sh" onclick="tog(this)"><span class="sn">03</span><span class="st">Threat Investigation</span><span class="sch">▾</span></div><div class="sb" id="s03"></div></div>
+    <div class="sec hl"><div class="sh open" onclick="tog(this)"><span class="sn" style="color:var(--white);background:rgba(34,211,238,0.15);">04</span><span class="st" style="color:var(--cyan);">Root Cause Analysis</span><span class="sch">▾</span></div><div class="sb open" id="s04"></div></div>
+    <div class="sec"><div class="sh open" onclick="tog(this)"><span class="sn">05</span><span class="st">Proposed Solutions</span><span class="sch">▾</span></div><div class="sb open" id="s05"></div></div>
+    <div class="sec"><div class="sh open" onclick="tog(this)"><span class="sn">06</span><span class="st">Recommended Actions &amp; Preventive Measures</span><span class="sch">▾</span></div><div class="sb open" id="s06"></div></div>
+  </div>
+</div>
+
+<script>
+const SAMPLE=`Subject: Escalation — Multi-Vector Brand Attack Not Detected | NovaSoft Technologies | April 2026
+
+From: Daniel Osei, Senior Account Manager
+To: CTI Investigation Team
+Priority: Critical
+Ticket Reference: TKT-20260401-NS
+
+Hi Team,
+
+I am formally escalating on behalf of our client NovaSoft Technologies. Their internal security team has independently discovered several active threats not surfaced by our platform.
+
+ASSET 1 — Dark Web Source Code Leak
+A dark web forum post dated 28th March 2026 advertises NovaSoft's proprietary source code including file structure screenshots.
+
+ASSET 2 — Executive Impersonation on LinkedIn
+A LinkedIn profile impersonating NovaSoft's CEO (James Whitfield) has been active for 3 weeks, directing targets to a fake investor portal at https[:]//novasoft-investor-portal[.]com.
+
+ASSET 3 — Phishing Domain
+https[:]//novasoft-clientportal[.]net is serving a credential harvesting page impersonating NovaSoft's client dashboard. Domain registered 12 days ago. Two enterprise clients reported phishing emails directing them here.
+
+ASSET 4 — Malicious Package on Public Repository
+A package named "novasoft-sdk-utils" was published to a public package registry 9 days ago, impersonating NovaSoft's legitimate SDK with credential-harvesting code.
+
+ASSET 5 — Fake Job Postings
+Fraudulent job postings directing applicants to https[:]//novasoft-careers-apply[.]com collecting personal information and identity documents.
+
+ASSET 6 — Telegram Channel
+A Telegram channel "NovaSoft Leaks" with 1,800 members posting internal documents for 2 weeks.
+
+Client requires full RCA within 48 hours.
+
+Regards, Daniel Osei`;
+
+const MSGS=['Running Escalation Understanding Agent…','Extracting and classifying assets…','Querying VirusTotal threat intelligence…','Running Investigation Agent…','Generating Root Cause Analysis…','Compiling final report…'];
+let lastResult=null;
+
+async function run(){
+  const email=document.getElementById('ei').value.trim();
+  const ak=document.getElementById('ak').value.trim();
+  if(!email){showErr('Please paste an escalation email first.');return;}
+  if(!ak){showErr('Anthropic API key is required. Get yours free at console.anthropic.com');return;}
+  hideErr();clearResults();setLoad(true);
+  let i=0;
+  const iv=setInterval(()=>{i++;if(i<MSGS.length)document.getElementById('lmsg').textContent=MSGS[i];},2800);
+  try{
+    const res=await fetch('/analyze',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email_text:email,anthropic_key:ak,vt_key:document.getElementById('vk').value.trim()})});
+    const data=await res.json();
+    if(data.error){showErr(data.error);return;}
+    lastResult=data;render(data);
+    const r=document.getElementById('results');r.style.display='block';
+    setTimeout(()=>{r.classList.add('show');r.scrollIntoView({behavior:'smooth',block:'start'});},50);
+  }catch(e){showErr('Connection error: '+e.message+'. Make sure the app is running (python app.py).');}
+  finally{clearInterval(iv);setLoad(false);}
+}
+
+function render(d){
+  const e=d.escalation_summary||{},v=d.investigation||{},r=d.rca||{},vt=d.vt_enrichment||{};
+  const c=r.cause_and_effect||{},im=r.impact_assessment||{};
+  document.getElementById('ss').innerHTML=badge(e.severity);
+  document.getElementById('st').textContent=fmt(e.escalation_type);
+  document.getElementById('sp').textContent=e.platform_affected||'—';
+  document.getElementById('sb').textContent=e.brand_targeted||'—';
+  set('s01',kv([['Summary',e.escalation_summary],['Type',fmt(e.escalation_type)],['Severity',badge(e.severity)],['Pillar',e.pillar_affected],['Platform',e.platform_affected],['Client',e.brand_targeted],['Detection Issue',e.detection_issue],['Client Impact',e.client_impact],['Ticket',e.ticket_reference]]));
+  const assets=v.assets_investigated||[];
+  set('s02',assets.length?assets.map(a=>{
+    const dk=dom(a.asset),vi=vt[dk]||vt[a.asset];
+    return`<div class="ac"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap;"><span class="an">${a.asset||'Unknown'}</span>${badge(a.risk_level)}</div><div class="ad"><b>Type:</b> ${a.asset_type||'—'}</div><div class="ad"><b>Purpose:</b> ${a.likely_purpose||'—'}</div><div class="ad">${a.why_suspicious||''}</div>${a.indicators?.length?`<div class="tags">${a.indicators.map(t=>`<span class="tag">${t}</span>`).join('')}</div>`:''} ${vi?vtCard(vi):'<div style="font-family:var(--mono);font-size:10px;color:var(--text2);margin-top:10px;">VT: No key provided or asset not found</div>'}</div>`;}).join(''):'<p style="color:var(--text2);">No specific assets extracted.</p>');
+  set('s03',kv([['Classification',v.threat_classification],['Attack Vector',v.attack_vector],['Victim Targeting',v.victim_targeting],['Evasion Pattern',v.detection_evasion]])+`<div class="rb" style="margin-top:16px;"><div class="rt">Threat Narrative</div><p>${v.threat_narrative||'—'}</p></div>`);
+  set('s04',`<div class="rb"><div class="rt">Problem Statement</div><p>${r.problem_statement||'—'}</p></div><div class="rb"><div class="rt">Executive Summary</div><p>${r.executive_summary||'—'}</p></div><div class="rb red"><div class="rt">Root Cause</div><p>${c.root_cause||'—'}</p></div><div class="rb"><div class="rt">Detection Gap Explanation</div><p>${c.detection_gap_explanation||'—'}</p></div>${c.contributing_factors?.length?`<div class="rb"><div class="rt">Contributing Factors</div><ul class="blist">${c.contributing_factors.map(f=>`<li>${f}</li>`).join('')}</ul></div>`:''}<div class="rb"><div class="rt">Platform Constraints</div><p>${c.platform_constraints||'—'}</p></div>${r.threat_intelligence_context?`<div class="rb gld"><div class="rt">External Threat Intelligence</div><p>${r.threat_intelligence_context}</p></div>`:''}<div class="rb grn"><div class="rt">Impact Assessment</div><p><b>Actual:</b> ${im.actual_impact||'—'}</p><p style="margin-top:6px;"><b>Potential:</b> ${im.potential_impact||'—'}</p><p style="margin-top:6px;"><b>Area:</b> ${im.affected_area||'—'}</p></div>`);
+  set('s05',(r.proposed_solutions||[]).map(s=>`<div class="sol"><div class="solh"><span class="sid">SOL-${s.solution_id||'001'}</span><span style="font-size:14px;font-weight:600;color:var(--white);">${s.title||''}</span>${badge(s.term?.toLowerCase()==='immediate'?'Critical':s.term?.toLowerCase()==='short-term'?'High':'Medium')}</div><p style="font-size:13px;color:var(--text);line-height:1.7;margin-bottom:12px;">${s.description||''}</p>${kv([['Status',s.status],['Expected Completion',s.expected_completion]])}</div>`).join(''));
+  const ra=r.recommended_actions||[],pm=r.preventive_measures||[];
+  set('s06',`${ra.length?`<div style="font-family:var(--mono);font-size:9px;color:var(--cyan);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Recommended Actions</div><ul class="blist" style="margin-bottom:20px;">${ra.map(a=>`<li>${a}</li>`).join('')}</ul>`:''} ${pm.length?`<div style="font-family:var(--mono);font-size:9px;color:var(--green);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Preventive Measures</div><ul class="blist g" style="margin-bottom:20px;">${pm.map(p=>`<li>${p}</li>`).join('')}</ul>`:''} ${r.lessons_learned?`<div class="rb grn"><div class="rt">Lessons Learned</div><p>${r.lessons_learned}</p></div>`:''}`);
+}
+
+function vtCard(i){
+  if(!i.found) return`<div style="font-family:var(--mono);font-size:10px;color:var(--text2);margin-top:10px;">VT: ${i.verdict||'Not Found'}</div>`;
+  const vc=i.verdict==='Malicious'?'color:var(--red)':i.verdict==='Suspicious'?'color:#fb923c':'color:var(--green)';
+  const vb=i.verdict==='Malicious'?'bc':i.verdict==='Suspicious'?'bh':'bl';
+  return`<div class="vtc"><div class="vtt"><span class="vtp">VT</span> VirusTotal — ${i.queried} <span class="badge ${vb}" style="margin-left:6px;">${i.verdict}</span></div><div class="vts"><div class="vtb"><div class="vtn" style="${vc}">${i.malicious||0}</div><div class="vtlb">Malicious</div></div><div class="vtb"><div class="vtn" style="color:#fb923c">${i.suspicious||0}</div><div class="vtlb">Suspicious</div></div><div class="vtb"><div class="vtn" style="color:var(--green)">${i.harmless||0}</div><div class="vtlb">Harmless</div></div><div class="vtb"><div class="vtn">${i.total_engines||0}</div><div class="vtlb">Total</div></div></div><div style="font-family:var(--mono);font-size:10px;color:var(--text2);">${i.registrar?`Registrar: <span style="color:var(--text)">${i.registrar}</span>  `:''}${i.country&&i.country!=='Unknown'?`Country: <span style="color:var(--text)">${i.country}</span>`:''}${i.categories?.length?`  Categories: <span style="color:var(--text)">${i.categories.join(', ')}</span>`:''}</div></div>`;
+}
+
+function dom(a){if(!a)return'';return a.replace(/\[.\]/g,'.').replace(/\[:\]/g,':').replace(/^https?:\/\//,'').split('/')[0].split(':')[0];}
+function kv(rows){const f=rows.filter(([,v])=>v);if(!f.length)return'';return`<div class="kv">${f.map(([l,v])=>`<div class="kvr"><div class="kvl">${l}</div><div class="kvv">${v||'—'}</div></div>`).join('')}</div>`;}
+function badge(s){if(!s)return'—';const m={critical:'bc',high:'bh',medium:'bm',low:'bl'};return`<span class="badge ${m[s.toLowerCase()]||'bm'}">${s}</span>`;}
+function fmt(s){return s?s.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()):'—';}
+function tog(h){h.classList.toggle('open');h.nextElementSibling.classList.toggle('open');}
+function set(id,html){const el=document.getElementById(id);if(el)el.innerHTML=html;}
+
+async function dl(type){
+  if(!lastResult){showErr('No report to download. Run an analysis first.');return;}
+  try{
+    const res=await fetch(`/download/${type}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(lastResult)});
+    if(!res.ok){const d=await res.json();showErr(d.error||'Download failed.');return;}
+    const blob=await res.blob();
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=url;
+    a.download=`ThreatMail_RCA_Report.${type==='word'?'docx':'pdf'}`;
+    a.click();URL.revokeObjectURL(url);
+  }catch(e){showErr('Download failed: '+e.message);}
+}
+
+function setLoad(on){document.getElementById('abtn').disabled=on;document.getElementById('loader').classList.toggle('on',on);if(on)document.getElementById('lmsg').textContent=MSGS[0];}
+function showErr(m){const e=document.getElementById('errBox');e.textContent='⚠ '+m;e.style.display='block';}
+function hideErr(){document.getElementById('errBox').style.display='none';}
+function clearResults(){['s01','s02','s03','s04','s05','s06'].forEach(id=>set(id,''));['ss','st','sp','sb'].forEach(id=>{const e=document.getElementById(id);if(e)e.innerHTML='—';});const r=document.getElementById('results');r.classList.remove('show');r.style.display='none';lastResult=null;}
+function loadSample(){document.getElementById('ei').value=SAMPLE;}
+function clearAll(){document.getElementById('ei').value='';clearResults();hideErr();}
+</script>
+</body>
+</html>

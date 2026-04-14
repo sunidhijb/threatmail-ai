@@ -1,0 +1,281 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>ThreatMail AI — Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07090f;--s1:#0c0f1a;--s2:#111827;--border:#1e2d44;--border2:#243044;--cyan:#22d3ee;--red:#f43f5e;--green:#10b981;--gold:#f59e0b;--text:#cbd5e1;--text2:#64748b;--white:#f1f5f9;--mono:'IBM Plex Mono',monospace;--sans:'Inter',sans-serif;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;min-height:100vh;background-image:radial-gradient(ellipse 60% 40% at 15% 0%,rgba(34,211,238,0.05) 0%,transparent 60%);}
+a{text-decoration:none;color:inherit;}
+nav{height:58px;border-bottom:1px solid var(--border);background:rgba(7,9,15,0.96);backdrop-filter:blur(20px);position:sticky;top:0;z-index:200;display:flex;align-items:center;padding:0 32px;}
+.nb{display:flex;align-items:center;gap:10px;margin-right:36px;}
+.ni{width:30px;height:30px;background:linear-gradient(135deg,#22d3ee,#f43f5e);border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:600;color:#000;}
+.nt{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--white);letter-spacing:1.5px;}
+.nls{display:flex;gap:2px;}
+.nl{padding:7px 14px;border-radius:7px;font-size:12px;font-weight:500;color:var(--text2);transition:all 0.15s;}
+.nl:hover{color:var(--white);background:rgba(255,255,255,0.06);}
+.nl.active{color:var(--cyan);background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.15);}
+.nr{margin-left:auto;font-size:11px;color:var(--text2);font-family:var(--mono);display:flex;align-items:center;gap:6px;}
+.nd{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.4;}}
+.wrap{max-width:1060px;margin:0 auto;padding:36px 20px 80px;}
+.ptag{font-family:var(--mono);font-size:10px;color:var(--cyan);letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;}
+.ptitle{font-size:24px;font-weight:700;color:var(--white);margin-bottom:6px;letter-spacing:-0.3px;}
+.psub{font-size:13px;color:var(--text2);margin-bottom:28px;line-height:1.6;}
+.card{background:var(--s2);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:16px;}
+.badge{display:inline-block;padding:2px 9px;border-radius:20px;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;}
+.bc{background:rgba(244,63,94,0.15);color:#f43f5e;border:1px solid rgba(244,63,94,0.3);}
+.bh{background:rgba(251,146,60,0.12);color:#fb923c;border:1px solid rgba(251,146,60,0.3);}
+.bm{background:rgba(234,179,8,0.1);color:#eab308;border:1px solid rgba(234,179,8,0.3);}
+.bl{background:rgba(16,185,129,0.1);color:#10b981;border:1px solid rgba(16,185,129,0.3);}
+.bo{background:rgba(34,211,238,0.1);color:#22d3ee;border:1px solid rgba(34,211,238,0.2);}
+.bw{background:rgba(245,158,11,0.1);color:#f59e0b;border:1px solid rgba(245,158,11,0.25);}
+.bd2{background:rgba(16,185,129,0.1);color:#10b981;border:1px solid rgba(16,185,129,0.25);}
+.bf{background:rgba(244,63,94,0.1);color:#f87171;border:1px solid rgba(244,63,94,0.25);}
+table{width:100%;border-collapse:collapse;}
+th{padding:10px 14px;text-align:left;font-family:var(--mono);font-size:9px;color:var(--text2);letter-spacing:2px;text-transform:uppercase;border-bottom:1px solid var(--border);background:rgba(34,211,238,0.02);}
+td{padding:11px 14px;font-size:13px;color:var(--text);border-bottom:1px solid var(--border);}
+tr:hover td{background:rgba(255,255,255,0.015);cursor:pointer;}
+tr:last-child td{border-bottom:none;}
+.sg{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px;}
+.sb{background:var(--s2);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;transition:border-color 0.2s;}
+.sb:hover{border-color:var(--cyan);}
+.sn{font-family:var(--mono);font-size:26px;font-weight:600;color:var(--white);}
+.sl{font-family:var(--mono);font-size:9px;color:var(--text2);letter-spacing:2px;margin-top:4px;}
+.btn{padding:8px 18px;border-radius:7px;font-family:var(--mono);font-size:11px;font-weight:600;cursor:pointer;border:none;transition:opacity 0.2s;}
+.btn:hover{opacity:0.8;}
+.bpri{background:linear-gradient(135deg,#22d3ee,#06b6d4);color:#000;}
+.bgho{background:transparent;color:var(--text2);border:1px solid var(--border);}
+.bgho:hover{color:var(--white);border-color:var(--text2);}
+.empty{text-align:center;padding:80px;color:var(--text2);}
+#empty-dash{display:none;}
+.clabel{font-family:var(--mono);font-size:10px;color:var(--cyan);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;}
+.spin{width:20px;height:20px;border:2px solid var(--border2);border-top-color:var(--cyan);border-radius:50%;animation:spin 0.75s linear infinite;margin:auto;}
+@keyframes spin{to{transform:rotate(360deg);}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+</head>
+<body>
+<nav>
+  <div class="nb"><div class="ni">TM</div><span class="nt">THREATMAIL</span></div>
+  <div class="nls">
+    <a href="/" class="nl">Analyze</a>
+    <a href="/tracker" class="nl">Tracker</a>
+    <a href="/takedowns" class="nl">Takedowns</a>
+    <a href="/gap-library" class="nl">Gap Library</a>
+    <a href="/dashboard" class="nl active">Dashboard</a>
+  </div>
+  <div class="nr"><span class="nd"></span>Built by Sunidhi Vishwakarma</div>
+</nav>
+
+<div class="wrap">
+  <div class="ptag">Module 05</div>
+  <div class="ptitle">Intelligence Dashboard</div>
+  <div class="psub">Patterns and trends across all escalations. See which clients escalate most, what threats repeat, and where gaps cluster.</div>
+
+  <div id="loading" style="text-align:center;padding:80px;"><div class="spin"></div></div>
+
+  <div id="empty-dash" style="display:none;text-align:center;padding:80px;color:var(--text2);">
+    <div style="font-size:48px;margin-bottom:16px;">📊</div>
+    <div style="font-family:var(--mono);font-size:13px;letter-spacing:1px;margin-bottom:8px;color:var(--white);">No Data Yet</div>
+    <div style="margin-bottom:24px;">Analyze escalation emails first — the dashboard populates automatically after each analysis.</div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="/"><button class="btn bpri">▶ Go to Analyze</button></a>
+      <button class="btn bgho" id="seedBtn" onclick="seedDemo()">🧪 Load Demo Data</button>
+    </div>
+    <div id="seedMsg" style="margin-top:14px;font-family:var(--mono);font-size:11px;color:var(--green);display:none;">✓ Demo data loaded — reloading dashboard...</div>
+  </div>
+
+  <div id="dc" style="display:none;">
+    <div class="sg">
+      <div class="sb"><div class="sn" id="k1">—</div><div class="sl">Total</div></div>
+      <div class="sb"><div class="sn" id="k2" style="color:#22d3ee">—</div><div class="sl">Clients</div></div>
+      <div class="sb"><div class="sn" id="k3" style="color:#f43f5e">—</div><div class="sl">Critical</div></div>
+      <div class="sb"><div class="sn" id="k4" style="color:#f59e0b">—</div><div class="sl">Open Takedowns</div></div>
+      <div class="sb"><div class="sn" id="k5" style="color:#10b981">—</div><div class="sl">Gap Library</div></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+      <div class="card"><div class="clabel">Escalations by Type</div><div style="position:relative;height:200px;"><canvas id="tc"></canvas></div></div>
+      <div class="card"><div class="clabel">Severity Distribution</div><div style="position:relative;height:200px;"><canvas id="sc"></canvas></div></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+      <div class="card"><div class="clabel">Monthly Trend</div><div style="position:relative;height:200px;"><canvas id="mc"></canvas></div></div>
+      <div class="card"><div class="clabel">Top Clients</div><div id="cb" style="padding-top:4px;"></div></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+      <div class="card"><div class="clabel">By Status</div><div style="position:relative;height:180px;"><canvas id="stc"></canvas></div></div>
+      <div class="card"><div class="clabel">Top Platforms</div><div id="platb" style="padding-top:4px;"></div></div>
+    </div>
+
+    <div class="card">
+      <div class="clabel">Recent Escalations</div>
+      <table>
+        <thead><tr><th>Date</th><th>Client</th><th>Type</th><th>Severity</th><th>Status</th></tr></thead>
+        <tbody id="rb"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+const C=['#22d3ee','#f43f5e','#10b981','#f59e0b','#a78bfa','#fb923c','#34d399','#f472b6'];
+let charts={};
+
+async function load(){
+  document.getElementById('loading').style.display='block';
+  try {
+    const [dr, gr] = await Promise.all([fetch('/api/dashboard'), fetch('/api/gaps')]);
+    const d = await dr.json();
+    const g = await gr.json();
+
+    document.getElementById('loading').style.display='none';
+
+    if(!d.total || d.total === 0){
+      document.getElementById('empty-dash').style.display='block';
+      return;
+    }
+
+    document.getElementById('dc').style.display='block';
+
+    document.getElementById('k1').textContent = d.total;
+    document.getElementById('k2').textContent = d.by_client.length;
+    document.getElementById('k3').textContent = (d.by_severity.find(s=>s.severity==='Critical')||{c:0}).c;
+    document.getElementById('k4').textContent = d.open_takedowns;
+    // Use gap_count from dashboard API (fixes the separate fetch dependency)
+    document.getElementById('k5').textContent = d.gap_count !== undefined ? d.gap_count : g.length;
+
+    // Type doughnut
+    mkChart('tc','doughnut',
+      d.by_type.map(t=>fmt(t.escalation_type)),
+      d.by_type.map(t=>t.c),
+      C, false);
+
+    // Severity bar
+    const so=['Critical','High','Medium','Low'];
+    const sc2=['#f43f5e','#fb923c','#eab308','#10b981'];
+    mkChart('sc','bar', so,
+      so.map(s=>(d.by_severity.find(x=>x.severity===s)||{c:0}).c),
+      sc2, true);
+
+    // Monthly line (already sorted ASC from DB)
+    mkChart('mc','line',
+      d.monthly.map(m=>m.month),
+      d.monthly.map(m=>m.c),
+      ['#22d3ee'], true, true);
+
+    // Status doughnut
+    mkChart('stc','doughnut',
+      d.by_status.map(s=>s.status||'Unknown'),
+      d.by_status.map(s=>s.c),
+      C, false);
+
+    // Top clients bar chart
+    const mx = Math.max(...d.by_client.map(c=>c.c), 1);
+    document.getElementById('cb').innerHTML = d.by_client.map(c=>`
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div style="font-family:var(--mono);font-size:11px;color:var(--text);width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${c.client_name||'Unknown'}</div>
+        <div style="flex:1;height:8px;background:var(--border2);border-radius:4px;overflow:hidden;">
+          <div style="height:100%;border-radius:4px;background:linear-gradient(90deg,#22d3ee,#10b981);width:${Math.round(c.c/mx*100)}%"></div>
+        </div>
+        <div style="font-family:var(--mono);font-size:11px;color:#22d3ee;width:20px;text-align:right;">${c.c}</div>
+      </div>`).join('');
+
+    // Top platforms
+    const mx2 = Math.max(...(d.by_platform||[]).map(p=>p.c), 1);
+    document.getElementById('platb').innerHTML = (d.by_platform||[]).map(p=>`
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div style="font-family:var(--mono);font-size:11px;color:var(--text);width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${p.platform_affected||'Unknown'}</div>
+        <div style="flex:1;height:8px;background:var(--border2);border-radius:4px;overflow:hidden;">
+          <div style="height:100%;border-radius:4px;background:linear-gradient(90deg,#a78bfa,#f43f5e);width:${Math.round(p.c/mx2*100)}%"></div>
+        </div>
+        <div style="font-family:var(--mono);font-size:11px;color:#a78bfa;width:20px;text-align:right;">${p.c}</div>
+      </div>`).join('') || '<div style="color:var(--text2);font-size:12px;">No platform data yet</div>';
+
+    // Recent table
+    document.getElementById('rb').innerHTML = d.recent.map(e=>`
+      <tr onclick="window.location='/tracker'">
+        <td style="font-family:var(--mono);font-size:11px;">${(e.created_at||'').slice(0,10)||'—'}</td>
+        <td style="font-weight:600;color:var(--white)">${e.client_name||'—'}</td>
+        <td style="font-size:12px;">${fmt(e.escalation_type)}</td>
+        <td>${badge(e.severity)}</td>
+        <td>${sbadge(e.status)}</td>
+      </tr>`).join('');
+
+  } catch(err) {
+    document.getElementById('loading').style.display='none';
+    document.getElementById('empty-dash').style.display='block';
+    console.error('Dashboard load error:', err);
+  }
+}
+
+function mkChart(id, type, labels, data, colors, showAxes, isLine=false){
+  if(!document.getElementById(id)) return;
+  if(charts[id]) charts[id].destroy();
+  const ctx = document.getElementById(id).getContext('2d');
+  charts[id] = new Chart(ctx, {
+    type,
+    data:{
+      labels,
+      datasets:[{
+        data,
+        backgroundColor: isLine ? 'rgba(34,211,238,0.1)' : colors,
+        borderColor: isLine ? (colors[0]||'#22d3ee') : colors,
+        borderWidth: isLine ? 2 : 1,
+        fill: isLine,
+        tension: 0.4,
+        pointBackgroundColor:'#22d3ee',
+        pointRadius: isLine ? 4 : undefined
+      }]
+    },
+    options:{
+      responsive:true,
+      maintainAspectRatio:false,
+      plugins:{
+        legend:{
+          display: type==='doughnut',
+          labels:{color:'#64748b',font:{family:'IBM Plex Mono',size:10},padding:10}
+        }
+      },
+      scales: showAxes ? {
+        x:{ticks:{color:'#64748b',font:{family:'IBM Plex Mono',size:10}},grid:{color:'rgba(30,45,68,0.4)'}},
+        y:{ticks:{color:'#64748b',font:{family:'IBM Plex Mono',size:10}},grid:{color:'rgba(30,45,68,0.4)'},beginAtZero:true}
+      } : {}
+    }
+  });
+}
+
+function fmt(s){ return s ? s.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase()) : '—'; }
+function badge(s){
+  if(!s) return '—';
+  const m={critical:'bc',high:'bh',medium:'bm',low:'bl'};
+  return `<span class="badge ${m[s?.toLowerCase()]||'bm'}">${s}</span>`;
+}
+function sbadge(s){
+  const m={'RCA Generated':'bo','RCA Sent':'bw','In Progress':'bw','Resolved':'bd2'};
+  return `<span class="badge ${m[s]||'bo'}">${s||'Open'}</span>`;
+}
+
+async function seedDemo(){
+  const btn = document.getElementById('seedBtn');
+  btn.disabled = true; btn.textContent = 'Seeding...';
+  try {
+    const r = await fetch('/api/seed-demo', {method:'POST'});
+    const d = await r.json();
+    if(d.ok){
+      document.getElementById('seedMsg').style.display='block';
+      setTimeout(()=>{ location.reload(); }, 1500);
+    } else {
+      btn.textContent = 'Error: ' + (d.error||'failed');
+    }
+  } catch(e){
+    btn.textContent = 'Error — check console';
+    console.error(e);
+  }
+}
+
+window.addEventListener('load', function(){ setTimeout(load, 100); });
+</script>
+</body></html>

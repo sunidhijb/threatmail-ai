@@ -1,0 +1,87 @@
+============================================================
+  ThreatMail AI — SETUP GUIDE
+  Built by Sunidhi Vishwakarma
+============================================================
+
+INSTALL & RUN
+─────────────
+1. Open PowerShell
+2. cd Desktop\ThreatMail_AI
+3. pip install -r requirements.txt
+4. python app.py
+5. Open Chrome → http://127.0.0.1:5000
+
+
+USE THE APP
+───────────
+1. Enter Anthropic API key (get at console.anthropic.com)
+2. Enter VirusTotal API key (optional, free at virustotal.com)
+3. Paste escalation email
+4. Click Analyze Escalation
+5. Download Word or PDF report
+
+
+TROUBLESHOOTING
+───────────────
+"python not recognized"      → Reinstall Python, check "Add to PATH"
+"No module named flask"      → Run: pip install -r requirements.txt
+API Error 401                → Wrong Anthropic API key
+API Error 402                → Add credits: console.anthropic.com/billing
+"Could not resolve auth"     → API key not entered in the UI field
+Nothing happens on click     → Check PowerShell for error messages
+
+
+WHAT IS FIXED IN THIS VERSION
+──────────────────────────────
+✅ No  mentions anywhere
+✅ Clean professional UI (Inter + IBM Plex Mono)
+✅ RCA: no failure language, no internal exposure, no overclaims
+✅ Client Sentiment removed from all output
+✅ Visibility Limitations section removed
+✅ No repetition across RCA sections
+✅ Proper error handling — friendly error messages
+✅ Fallback output if AI parsing fails
+✅ debug=False (production safe)
+✅ All imports tested and verified working
+
+
+SAMPLE ESCALATION EMAIL (NovaSoft — for LinkedIn)
+──────────────────────────────────────────────────
+Subject: Escalation — Multi-Vector Brand Attack | NovaSoft Technologies | April 2026
+
+From: Daniel Osei, Senior Account Manager
+To: CTI Investigation Team
+Priority: Critical
+Ticket: TKT-20260401-NS
+
+Hi Team,
+
+Formally escalating on behalf of NovaSoft Technologies. Their security team
+discovered several active threats not surfaced by our platform.
+
+ASSET 1 — Dark Web Source Code Leak
+Forum post dated 28 March advertising NovaSoft source code with file screenshots.
+
+ASSET 2 — CEO Impersonation on LinkedIn
+Profile impersonating CEO James Whitfield for 3 weeks, directing to fake investor
+portal at https[:]//novasoft-investor-portal[.]com
+
+ASSET 3 — Phishing Domain
+https[:]//novasoft-clientportal[.]net — credential harvesting page, registered
+12 days ago. Two clients reported phishing emails.
+
+ASSET 4 — Malicious Package
+"novasoft-sdk-utils" on public registry — credential-harvesting code in SDK.
+
+ASSET 5 — Fake Job Portal
+https[:]//novasoft-careers-apply[.]com — collecting identity documents.
+
+ASSET 6 — Telegram Leak Channel
+"NovaSoft Leaks" — 1,800 members, posting internal docs for 2 weeks.
+
+Full RCA required within 48 hours.
+Regards, Daniel Osei
+
+============================================================
+  Open Source — Free for the CTI Community
+============================================================
